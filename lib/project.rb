@@ -3,9 +3,13 @@ def count_stops_to_exchange_all_gossips routes
   first_driver_stops = routes.first
   last_driver_stops = routes.last
 
-  stop = first_driver_stops.find do |stop|
-    last_driver_stops.include? stop
+  matching_stop = nil
+
+  first_driver_stops.size.times do |slice_index|
+     if (first_driver_stops[slice_index] == last_driver_stops[slice_index])
+       matching_stop = slice_index + 1
+     end
   end
 
-  first_driver_stops.index(stop) + 1
+  matching_stop
 end

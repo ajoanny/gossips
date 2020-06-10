@@ -9,7 +9,7 @@ describe 'Gossiping Bus Drivers' do
   end
 
   describe 'when all the drivers do not start from the same stop' do
-    it 'exchanges all gossips on the second stop' do
+    it 'exchanges all gossips on the last stop' do
       number_of_stops = count_stops_to_exchange_all_gossips([[1,2],[3,2]])
       expect(number_of_stops).to eq 2
     end

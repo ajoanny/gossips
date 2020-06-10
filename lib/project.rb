@@ -1,15 +1,11 @@
 
 def count_stops_to_exchange_all_gossips routes
-  stop_index = nil
-
   first_driver_stops = routes.first
   last_driver_stops = routes.last
 
-  first_driver_stops.each_with_index do |stop, index|
-    if last_driver_stops[index] == stop
-      stop_index = index + 1
-    end
+  stop = first_driver_stops.find do |stop|
+    last_driver_stops.include? stop
   end
 
-  return  stop_index;
+  first_driver_stops.index(stop) + 1
 end

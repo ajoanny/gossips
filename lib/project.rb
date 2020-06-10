@@ -1,20 +1,10 @@
-class Project
 
-  def testFunction
-    mockFunction
-    return stubFunction
+def count_stops_to_exchange_all_gossips routes
+  stop_index = nil
+  routes.first.each_with_index do |stop, index|
+    if routes.last[index] == stop
+      stop_index = index + 1
+    end
   end
-
-  def mockFunction
-    return -1;
-  end
-
-  def stubFunction
-    return 1
-  end
-
-  def exceptionFunction
-    raise Error.new('Exception Catch');
-  end
-
+  return  stop_index;
 end

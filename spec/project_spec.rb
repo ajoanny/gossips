@@ -1,25 +1,22 @@
 require 'project'
 
-describe Project do
-  let(:project) { Project.new }
-
-  describe '#testFunction' do
-    it 'returns 1' do
-      expect(project.testFunction).to eq 1
+describe 'Gossiping Bus Drivers' do
+  describe 'when all the drivers start from the same stop' do
+    it 'exchanges all gossips on the first stop' do
+      number_of_stops = count_stops_to_exchange_all_gossips([[1],[1]])
+      expect(number_of_stops).to eq 1
     end
   end
 
-  describe 'mock' do
-    it 'calls mockFunction' do
-      expect(project).to receive(:mockFunction)
-      project.testFunction
+  describe 'when all the drivers do not start from the same stop' do
+    it 'exchanges all gossips on the second stop' do
+      number_of_stops = count_stops_to_exchange_all_gossips([[1,2],[3,2]])
+      expect(number_of_stops).to eq 2
     end
-  end
 
-  describe 'stub' do
-    it 'calls mockFunction' do
-      allow(project).to receive(:stubFunction).and_return(12)
-      expect(project.testFunction).to eq 12
+    it 'exchanges all gossips on the first stop where they meet' do
+      number_of_stops = count_stops_to_exchange_all_gossips([[1,2,5],[3,2,4]])
+      expect(number_of_stops).to eq 2
     end
   end
 end

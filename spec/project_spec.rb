@@ -33,4 +33,14 @@ describe 'Gossiping Bus Drivers' do
       end
     end
   end
+
+  context 'when two drivers have not the same number of stops'do
+    it 'exchanges all gossips on the first stop' do
+      number_of_stops = count_stops_to_exchange_all_gossips([
+        [1,2],
+        [2,3,4]]
+      )
+      expect(number_of_stops).to eq 4
+    end
+  end
 end

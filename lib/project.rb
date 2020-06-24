@@ -7,7 +7,7 @@ def count_stops_to_exchange_all_gossips routes
   stop_number = 1.upto(MAX_NUMBER_OF_STOPS).find do
 
     _drivers_by_station(drivers).each do |drivers_on_station|
-      drivers_on_station.each { |driver| driver.add_gossips(drivers_on_station) }
+      drivers_on_station.each { |driver| driver.gossip(drivers_on_station) }
     end
 
     drivers.each(&:move)
@@ -37,7 +37,7 @@ class Driver
     @gossips.clone
   end
 
-  def add_gossips drivers
+  def gossip drivers
     new_gossips = drivers.map(&:gossips).flatten
     @gossips = (@gossips + new_gossips).uniq
   end

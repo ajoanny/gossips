@@ -4,7 +4,7 @@ MAX_NUMBER_OF_STOPS = 480
 def count_stops_to_exchange_all_gossips routes
   drivers = routes.map { |route| Driver.new(route) }
 
-  matching_stop = 1.upto(MAX_NUMBER_OF_STOPS).find do
+  stop_number = 1.upto(MAX_NUMBER_OF_STOPS).find do
 
     _drivers_by_station(drivers).each do |drivers_on_station|
       drivers_on_station.each { |driver| driver.add_gossips(drivers_on_station) }
@@ -14,7 +14,7 @@ def count_stops_to_exchange_all_gossips routes
 
     drivers.all? { |driver| driver.has_all_gossips?(drivers) }
   end
-  matching_stop || :never
+  stop_number || :never
 end
 
 def _drivers_by_station drivers

@@ -7,13 +7,13 @@ def count_stops_to_exchange_all_gossips routes
 
   matching_stop = MAX_NUMBER_OF_STOPS.times.find do |stop_number|
 
-    drivers_by_stop(routes, stop_number, driver_gossisp.values).each do |_, driver_indexs|
-      drivers = driver_indexs.map { |i| driver_gossisp[i] }
+    driver_gossisp.values.group_by(&:stop).each do |_, drivers|
       gossips = drivers.map(&:gossips).flatten
 
       drivers.each do |driver|
         driver.add_gossips gossips
       end
+      drivers.each(&:move);
     end
 
     if(driver_gossisp.all? { |_, driver| driver.gossips.size == routes.size })
@@ -25,22 +25,6 @@ def count_stops_to_exchange_all_gossips routes
   matching_stop || :never
 end
 
-private
-
-def drivers_by_stop(routes, stop_number, drivers)
-  driver_by_stop = {}
-
-  routes.each.with_index do |route, driver|
-    index = stop_number % route.size
-    stop = route[index]
-
-    driver_by_stop[stop] ||= []
-    driver_by_stop[stop] << driver
-  end
-
-  driver_by_stop
-end
-
 class Driver
 
   @@counter = 0
@@ -49,6 +33,8 @@ class Driver
     token = @@counter.to_s.to_sym
     @@counter+= 1
     @gossips = [token]
+    @route = route
+    @stop_index = 0
   end
 
   def gossips
@@ -57,5 +43,13 @@ class Driver
 
   def add_gossips gossips
     @gossips = (@gossips +gossips).uniq
+  end
+
+  def stop
+    @route[@stop_index]
+  end
+
+  def move
+    @stop_index = (@stop_index + 1) % @route.size
   end
 end

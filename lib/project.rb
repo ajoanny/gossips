@@ -1,6 +1,5 @@
 MAX_NUMBER_OF_STOPS = 480
 
-
 def count_stops_to_exchange_all_gossips routes
   drivers = routes.map { |route| Driver.new(route) }
 

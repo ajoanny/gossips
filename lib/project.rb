@@ -11,12 +11,10 @@ def count_stops_to_exchange_all_gossips routes
     end
     drivers.each(&:move)
 
-    if(drivers.all? { |driver| driver.has_all_gossips?(drivers) })
+    if drivers.all? { |driver| driver.has_all_gossips?(drivers) }
       return stop_number + 1;
     end
-
   end
-
   matching_stop || :never
 end
 

@@ -28,18 +28,18 @@ class Driver
   def initialize route
     token = @@counter.to_s.to_sym
     @@counter+= 1
-    @gossips = [token]
+    @known_gossips = [token]
     @route = route
     @stop_index = 0
   end
 
-  def gossips
-    @gossips.clone
+  def known_gossips
+    @known_gossips.clone
   end
 
   def gossip drivers
-    new_gossips = drivers.map(&:gossips).flatten
-    @gossips = (@gossips + new_gossips).uniq
+    new_gossips = drivers.map(&:known_gossips).flatten
+    @known_gossips = (@known_gossips + new_gossips).uniq
   end
 
   def station
@@ -51,6 +51,6 @@ class Driver
   end
 
   def has_all_gossips? drivers
-    @gossips.size == drivers.size
+    @known_gossips.size == drivers.size
   end
 end

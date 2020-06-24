@@ -71,4 +71,17 @@ describe 'Gossiping Bus Drivers' do
       end
     end
   end
+
+  context 'when there are more than two driver' do
+    context 'when drivers have to meet each other driver' do
+      it 'returns the stop where all drivers have met' do
+        number_of_stops = count_stops_to_exchange_all_gossips([
+          [1, 2, 0],
+          [1, 0, 3],
+          [0, 2, 3]
+        ])
+        expect(number_of_stops).to eq 3
+      end
+    end
+  end
 end

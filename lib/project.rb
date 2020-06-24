@@ -12,7 +12,7 @@ def count_stops_to_exchange_all_gossips routes
 
     drivers.each(&:move)
 
-    drivers.all? { |driver| driver.has_all_gossips?(drivers) }
+    drivers.all? { |driver| driver.know_all_gossips?(drivers) }
   end
   stop_number || :never
 end
@@ -50,7 +50,7 @@ class Driver
     @stop_index = (@stop_index + 1) % @route.size
   end
 
-  def has_all_gossips? drivers
+  def know_all_gossips? drivers
     @known_gossips.size == drivers.size
   end
 end

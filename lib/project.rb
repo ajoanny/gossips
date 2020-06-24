@@ -3,15 +3,15 @@ MAX_NUMBER_OF_STOPS = 480
 
 
 def count_stops_to_exchange_all_gossips routes
-  driver_gossisp = routes.size.times.map { |driver_index| [driver_index, Driver.new] }.to_h
+  driver_gossisp = routes.map.with_index { |route, driver_index| [driver_index, Driver.new(route)] }.to_h
 
   matching_stop = MAX_NUMBER_OF_STOPS.times.find do |stop_number|
 
-    drivers_by_stop(routes, stop_number).each do |_, drivers|
-      gossips = gossips_to_exchange(driver_gossisp, drivers)
+    drivers_by_stop(routes, stop_number, driver_gossisp.values).each do |_, driver_indexs|
+      gossips = gossips_to_exchange(driver_gossisp, driver_indexs)
 
-      drivers.each do |current_driver|
-        shared_gossip current_driver, driver_gossisp, gossips
+      driver_indexs.each do |current_driver|
+        driver_gossisp[current_driver].add_gossips gossips
       end
     end
 
@@ -26,7 +26,7 @@ end
 
 private
 
-def drivers_by_stop(routes, stop_number)
+def drivers_by_stop(routes, stop_number, drivers)
   driver_by_stop = {}
 
   routes.each.with_index do |route, driver|
@@ -44,17 +44,11 @@ def gossips_to_exchange driver_gossisp, drivers
   drivers.map { |driver| driver_gossisp[driver].gossips }.flatten
 end
 
-
-def shared_gossip current_driver, driver_gossisp, gossips
-   driver_gossisp[current_driver].add_gossips gossips
-end
-
-
 class Driver
 
   @@counter = 0
 
-  def initialize
+  def initialize route
     token = @@counter.to_s.to_sym
     @@counter+= 1
     @gossips = [token]

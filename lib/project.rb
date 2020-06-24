@@ -7,13 +7,9 @@ def count_stops_to_exchange_all_gossips routes
   matching_stop = MAX_NUMBER_OF_STOPS.times.find do |stop_number|
 
     drivers.group_by(&:stop).each do |_, drivers|
-      gossips = drivers.map(&:gossips).flatten
-
-      drivers.each do |driver|
-        driver.add_gossips gossips
-      end
-      drivers.each(&:move);
+      drivers.each { |driver| driver.add_gossips drivers }
     end
+    drivers.each(&:move)
 
     if(drivers.all? { |driver| driver.gossips.size == routes.size })
       return stop_number + 1;
@@ -40,8 +36,9 @@ class Driver
     @gossips.clone
   end
 
-  def add_gossips gossips
-    @gossips = (@gossips +gossips).uniq
+  def add_gossips drivers
+    new_gossips = drivers.map(&:gossips).flatten
+    @gossips = (@gossips + new_gossips).uniq
   end
 
   def stop

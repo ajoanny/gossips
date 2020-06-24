@@ -6,8 +6,8 @@ def count_stops_to_exchange_all_gossips routes
 
   matching_stop = 1.upto(MAX_NUMBER_OF_STOPS).find do
 
-    _drivers_by_stop(drivers).each do |drivers_on_stop|
-      drivers_on_stop.each { |driver| driver.add_gossips(drivers_on_stop) }
+    _drivers_by_station(drivers).each do |drivers_on_station|
+      drivers_on_station.each { |driver| driver.add_gossips(drivers_on_station) }
     end
 
     drivers.each(&:move)
@@ -17,8 +17,8 @@ def count_stops_to_exchange_all_gossips routes
   matching_stop || :never
 end
 
-def _drivers_by_stop drivers
-  drivers.group_by(&:stop).values
+def _drivers_by_station drivers
+  drivers.group_by(&:station).values
 end
 
 class Driver
@@ -42,7 +42,7 @@ class Driver
     @gossips = (@gossips + new_gossips).uniq
   end
 
-  def stop
+  def station
     @route[@stop_index]
   end
 

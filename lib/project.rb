@@ -1,4 +1,4 @@
-MAX_NUMBER_OF_STOPS = 500
+MAX_NUMBER_OF_STOPS = 480
 
 def count_stops_to_exchange_all_gossips routes
   first_driver_stops = routes.first

@@ -60,6 +60,15 @@ describe 'Gossiping Bus Drivers' do
           expect(number_of_stops).to eq 480
         end
       end
+
+      context 'when the drivers meet during the 481th stops' do
+        it 'does not exchange gossips' do
+          driver_1_stops = [1,3]
+          driver_2_stops = Array.new(480).fill(2).push(1)
+          number_of_stops = count_stops_to_exchange_all_gossips([driver_1_stops, driver_2_stops])
+          expect(number_of_stops).to eq :never
+        end
+      end
     end
   end
 end

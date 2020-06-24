@@ -36,7 +36,7 @@ describe 'Gossiping Bus Drivers' do
     end
 
     context 'when two drivers have not the same number of stops' do
-      it 'exchanges all gossips on the first stop' do
+      it 'exchanges all gossips on the first stop during any bus tour' do
         number_of_stops = count_stops_to_exchange_all_gossips([
           [1,2],
           [2,3,4]]

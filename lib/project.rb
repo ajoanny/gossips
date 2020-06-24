@@ -8,10 +8,11 @@ def count_stops_to_exchange_all_gossips routes
   matching_stop = MAX_NUMBER_OF_STOPS.times.find do |stop_number|
 
     drivers_by_stop(routes, stop_number, driver_gossisp.values).each do |_, driver_indexs|
-      gossips = gossips_to_exchange(driver_gossisp, driver_indexs)
+      drivers = driver_indexs.map { |i| driver_gossisp[i] }
+      gossips = drivers.map(&:gossips).flatten
 
-      driver_indexs.each do |current_driver|
-        driver_gossisp[current_driver].add_gossips gossips
+      drivers.each do |driver|
+        driver.add_gossips gossips
       end
     end
 
@@ -38,10 +39,6 @@ def drivers_by_stop(routes, stop_number, drivers)
   end
 
   driver_by_stop
-end
-
-def gossips_to_exchange driver_gossisp, drivers
-  drivers.map { |driver| driver_gossisp[driver].gossips }.flatten
 end
 
 class Driver

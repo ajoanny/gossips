@@ -7,11 +7,11 @@ def count_stops_to_exchange_all_gossips routes
   matching_stop = MAX_NUMBER_OF_STOPS.times.find do |stop_number|
 
     drivers.group_by(&:stop).each do |_, drivers|
-      drivers.each { |driver| driver.add_gossips drivers }
+      drivers.each { |driver| driver.add_gossips(drivers) }
     end
     drivers.each(&:move)
 
-    if(drivers.all? { |driver| driver.gossips.size == routes.size })
+    if(drivers.all? { |driver| driver.has_all_gossips?(drivers) })
       return stop_number + 1;
     end
 
@@ -47,5 +47,9 @@ class Driver
 
   def move
     @stop_index = (@stop_index + 1) % @route.size
+  end
+
+  def has_all_gossips? drivers
+    @gossips.size == drivers.size
   end
 end

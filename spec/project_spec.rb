@@ -83,5 +83,16 @@ describe 'Gossiping Bus Drivers' do
         expect(number_of_stops).to eq 3
       end
     end
+
+    context 'when a drivers have to wait another driver to get gossip from drivers who will never be meet' do
+      it 'returns the stop last driver get all the gossips' do
+        number_of_stops = count_stops_to_exchange_all_gossips([
+                                                                  [1, 2, 3],
+                                                                  [1, 1, 1],
+                                                                  [3, 3, 3]
+                                                              ])
+        expect(number_of_stops).to eq 4
+      end
+    end
   end
 end

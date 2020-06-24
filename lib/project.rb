@@ -3,6 +3,8 @@ MAX_NUMBER_OF_STOPS = 480
 def count_stops_to_exchange_all_gossips routes
   meet = 0
 
+  driver_gossisp = routes.size.times.map { |driver_index| [driver_index, [driver_index]] }.to_h
+
   matching_stop = MAX_NUMBER_OF_STOPS.times.find do |slice_index|
 
     current_stops_of_drivers = routes.map do |route|
@@ -10,15 +12,21 @@ def count_stops_to_exchange_all_gossips routes
       route[stop]
     end
 
-    stops_with_several_drivers = current_stops_of_drivers.select do |stop|
-      current_stops_of_drivers.count(stop) > 1
+    driver_by_stop = current_stops_of_drivers.map{ |stop| [stop, []] }.to_h
+    current_stops_of_drivers.map.with_index { |stop, driver| driver_by_stop[stop] << driver }
+
+
+
+    driver_by_stop.each do |_, drivers|
+      gossips = drivers.map { |driver| driver_gossisp[driver] }.flatten
+      drivers.each do |current_driver|
+        knowned_gossips = driver_gossisp[current_driver] + gossips
+
+        driver_gossisp[current_driver] = knowned_gossips.uniq
+      end
     end
 
-    if(stops_with_several_drivers.any?)
-      meet += 1
-    end
-
-    if(meet == routes.size.times.sum)
+    if(driver_gossisp.all? { |_, gossips| gossips.size == routes.size })
       return slice_index + 1;
     end
   end
